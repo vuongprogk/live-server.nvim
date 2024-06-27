@@ -1,4 +1,4 @@
-local M = {}
+local LiveServer = {}
 
 local function log(message, level)
     vim.notify(
@@ -28,23 +28,23 @@ local function is_running(dir)
     return cached_dir and job_cache[cached_dir]
 end
 
-M.config = {
+LiveServer.config = {
     -- 8080 default is commonly used
-    args = { '--port=5555' },
+    args = { '--port=8080' },
 }
 
-M.toggle = function()
-    local dir = vim.fn.expand '%:p:h'
+LiveServer.toggle = function()
+    local dir = vim.fn.expand('%:p:h')
     local running = is_running(dir)
     if not running then
-        M.start()
+        LiveServer.start()
         return
     end
-    M.stop()
+    LiveServer.stop()
 end
 
-M.setup = function(user_config)
-    M.config = vim.tbl_deep_extend('force', M.config, user_config or {})
+LiveServer.setup = function(user_config)
+    LiveServer.config = vim.tbl_deep_extend('force', LiveServer.config, user_config or {})
 
     if not vim.fn.executable 'live-server' then
         log(
@@ -54,13 +54,13 @@ M.setup = function(user_config)
         return
     end
 
-    vim.api.nvim_create_user_command('LiveServerStart', M.start, {})
-    vim.api.nvim_create_user_command('LiveServerStop', M.stop, {})
-    vim.api.nvim_create_user_command('LiveServerToggle', M.toggle, {})
+    vim.api.nvim_create_user_command('LiveServerStart', LiveServer.start, {})
+    vim.api.nvim_create_user_command('LiveServerStop', LiveServer.stop, {})
+    vim.api.nvim_create_user_command('LiveServerToggle', LiveServer.toggle, {})
 end
 
-M.start = function()
-    local dir = vim.fn.expand '%:p:h'
+LiveServer.start = function()
+    local dir = vim.fn.expand('%:p:h')
     local running = is_running(dir)
 
     if running then
@@ -69,7 +69,7 @@ M.start = function()
     end
 
     local cmd = { 'live-server', dir }
-    vim.list_extend(cmd, M.config.args)
+    vim.list_extend(cmd, LiveServer.config.args)
 
     local job_id = vim.fn.jobstart(cmd, {
         on_stderr = function(_, data)
@@ -96,8 +96,8 @@ M.start = function()
     job_cache[dir] = job_id
 end
 
-M.stop = function()
-    local dir = vim.fn.expand '%:p:h'
+LiveServer.stop = function()
+    local dir = vim.fn.expand('%:p:h')
     local running = is_running(dir)
 
     if running then
@@ -110,4 +110,4 @@ M.stop = function()
     end
 end
 
-return M
+return LiveServer

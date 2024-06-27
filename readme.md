@@ -10,14 +10,14 @@ Live reload HTML, CSS, and JavaScript files inside neovim with the power of
 
 2. Install regularly with your neovim package manager
 
-For example, a config with [pnpm](https://pnpm.io) and
+For example, a config with [npm](https://www.npmjs.com) and
 [lazy.nvim](https://github.com/folke/lazy.nvim) may look like the following:
 
 ```lua
 require('lazy').setup {
     {
-        'barrett-ruth/live-server.nvim',
-        build = 'pnpm add -g live-server',
+        'vuongprogk/live-server.nvim',
+        build = 'npm install -g live-server',
         cmd = { 'LiveServerStart', 'LiveServerStop' },
         config = true
     }
@@ -42,8 +42,4 @@ See `:h live-server` for more information
 
 ## Acknowledgements
 
-1. [mazeloth/live-server](https://github.com/manzeloth/live-server/blob/main/plugin/live-server.vim):
-   the first ever live-server port to vim
-2. [aurum77/live-server.nvim](https://github.com/aurum77/live-server.nvim): the
-   first live-server port to neovim (however, it unecessarily depends on `npm`
-   and didn't quite cut it for me)
+1. [barrett-ruth/live-server.nvim](https://github.com/barrett-ruth/live-server.nvim): I folk from it! 
